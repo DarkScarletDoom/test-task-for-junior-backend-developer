@@ -52,6 +52,10 @@ func (s *Service) Create(ctx context.Context, input CreateInput) (*taskdomain.Ta
 			return nil, fmt.Errorf("failed to generate dates: %w", err)
 		}
 
+		if len(dates) == 0 {
+    		return nil, fmt.Errorf("%w: recurrence rule produces no future tasks (all dates are in the past or invalid)", ErrInvalidInput)
+		}
+
 		// Build task instances
 		tasks := make([]taskdomain.Task, len(dates))
 		now := s.now()
@@ -211,6 +215,10 @@ func (s *Service) rescheduleSeries(ctx context.Context, taskID int64, ruleID *in
 	dates, err := s.generator.GenerateDates(start, &createInput, s.planningCounts[input.RecurrenceType])
 	if err != nil {
 		return nil, fmt.Errorf("failed to generate dates: %w", err)
+	}
+
+	if len(dates) == 0 {
+    	return nil, fmt.Errorf("%w: recurrence rule produces no future tasks (all dates are in the past or invalid)", ErrInvalidInput)
 	}
 
 	tasks := make([]taskdomain.Task, len(dates))
