@@ -17,6 +17,7 @@ services:
       - ./migrations/0001_create_tasks.up.sql:/docker-entrypoint-initdb.d/0001_create_tasks.sql:ro
       - ./migrations/0002_add_recurrence_alter_tasks.up.sql:/docker-entrypoint-initdb.d/0002_add_recurrence_alter_tasks.sql:ro
       - ./migrations/0003_add_scheduled_at_to_recurrence_rules.up.sql:/docker-entrypoint-initdb.d/0003_add_scheduled_at_to_recurrence_rules.sql:ro
+      - ./migrations/0004_add_unique_idx.up.sql:/docker-entrypoint-initdb.d/0004_add_unique_idx.sql:ro
 
   app:
     build:
